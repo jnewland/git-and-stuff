@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
   iputils-ping \
   jq \
   netcat \
+  nmap \
   ntpdate \
   openssh-client \
   procps \
