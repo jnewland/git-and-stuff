@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
   iptables \
   iputils-ping \
   jq \
+  lsof \
   netcat \
   nmap \
   ntpdate \
