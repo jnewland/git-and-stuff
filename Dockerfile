@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
   nmap \
   ntpdate \
   openssh-client \
+  postgresql-client \
   procps \
   strace \
   telnet \
