@@ -5,7 +5,6 @@
     },
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
     "workspaceFolder": "/workspace",
-    "service": "app",
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },
