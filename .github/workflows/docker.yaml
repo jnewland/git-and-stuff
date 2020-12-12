@@ -14,7 +14,7 @@ jobs:
           github-token: ${{ github.token }}
           images: |
             ${{ github.repository }}
-            gcr.io/${{ github.repository }}/${{ github.event.repository.name }}
+            ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
 
       - uses: actions/cache@v2
         with:
