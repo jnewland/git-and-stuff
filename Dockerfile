@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:stable-slim@sha256:2b2450dd709e858ef5e518f9c78c1f3f0638db73fe41c387217465b1f2f2bd83
 COPY Aptfile* /
 ARG UPDATE_APTFILE=true
 RUN apt-get update -qq && apt-get -y install $(cat ./Aptfile | grep -v -s -e '^#' | grep -v -s -e "^:repo:" | tr '\n' ' ') && \
