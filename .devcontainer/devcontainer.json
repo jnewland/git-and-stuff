@@ -4,7 +4,8 @@
         "context": "..",
         "args": {
             "TARGETPLATFORM": "linux/amd64",
-            "TARGETARCH": "amd64"
+            "TARGETARCH": "amd64",
+            "TARGETVARIANT": ""
         },
     },
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
