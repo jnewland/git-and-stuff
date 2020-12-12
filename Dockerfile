@@ -1,12 +1,22 @@
-FROM debian:stable-slim
+ARG TARGETPLATFORM=linux/amd64
+FROM --platform=$TARGETPLATFORM debian:stable-slim
+ARG TARGETPLATFORM=linux/amd64
 COPY Aptfile* /
 ARG UPDATE_APTFILE=true
-RUN apt-get update -qq && apt-get -y install $(cat ./Aptfile | grep -v -s -e '^#' | grep -v -s -e "^:repo:" | tr '\n' ' ') && \
+RUN TARGETARCH=$(echo $TARGETPLATFORM | cut -f2 -d/) && \
+    TARGETARM=$(echo $TARGETPLATFORM | cut -f3 -d/ ) && \
+    TARGET="${TARGETARCH}${TARGETARM}" && \
+    test -n "$TARGET" && \
+    cat /Aptfile > /Aptfile.merged && echo "" >> /Aptfile.merged && \
+    touch /Aptfile.$TARGET && cat /Aptfile.$TARGET >> /Aptfile.merged && echo "" >> /Aptfile.merged && \
+    apt-get update -qq && apt-get -y install $(cat /Aptfile.merged | grep -v -s -e '^#' | grep -v -s -e "^:repo:" | tr '\n' ' ') && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    dpkg -l | grep ii | awk '{print $2 "=" $3}' > /Aptfile.actual && \
-    diff -u /Aptfile.lock /Aptfile.actual && diff=$? || diff=$? && \
-    if [ "${UPDATE_APTFILE}" != "true" ]; then \
+    dpkg -l | grep ii | awk '{print $2 "=" $3}' > /Aptfile.$TARGET.actual && \
+    diff -u /Aptfile.$TARGET.lock /Aptfile.$TARGET.actual && diff=$? || diff=$? && \
+    if [ "${UPDATE_APTFILE}" = "true" ]; then \
         exit $diff; \
+    else \
+        cp /Aptfile.$TARGET.actual /Aptfile.$TARGET.lock; \
     fi
 
 RUN useradd --create-home app && \

@@ -18,6 +18,6 @@
         "ms-vscode.go",
         "sleistner.vscode-fileutils"
     ],
-    "postCreateCommand": "cp /Aptfile.actual /workspace/Aptfile.lock",
+    "postCreateCommand": "sh -c 'cp /Aptfile.*.lock /workspace/'",
     "remoteUser": "app"
 }
