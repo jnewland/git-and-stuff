@@ -1,0 +1,27 @@
+{
+  "labels": ["renovate"],
+  "extends": ["config:base"],
+  "rebaseWhen": "conflicted",
+  "packageRules": [
+    {
+      "updateTypes": ["major"],
+      "labels": ["major"]
+    },
+    {
+      "updateTypes": ["minor"],
+      "labels": ["minor"]
+    },
+    {
+      "updateTypes": ["patch"],
+      "labels": ["patch"]
+    },
+    {
+      "datasources": ["docker"],
+      "labels": ["docker"]
+    },
+    {
+      "packageNames": "renovatebot/github-action",
+      "extends": ["schedule:monthly"]
+    }
+  ]
+}
