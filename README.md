@@ -10,6 +10,6 @@ Sometimes, you want a Docker container with git, bash, ssh, jq, curl, and vim. O
 - <code>ghcr.io/[jnewland/git-and-stuff](https://github.com/users/jnewland/packages/container/package/git-and-stuff):latest</code>
 ### Docker Hub
 
-- <code>[jnewland/git-and-stuff](https://hub.docker.com/u/jnewland/git-and-stuff):main</code> tracks this branch
-- <code>[jnewland/git-and-stuff](https://hub.docker.com/u/jnewland/git-and-stuff):v0.0.1</code> is the latest release
-- <code>[jnewland/git-and-stuff](https://hub.docker.com/u/jnewland/git-and-stuff):latest</code>
+- <code>[jnewland/git-and-stuff](https://hub.docker.com/r/jnewland/git-and-stuff):main</code> tracks this branch
+- <code>[jnewland/git-and-stuff](https://hub.docker.com/r/jnewland/git-and-stuff):v0.0.1</code> is the latest release
+- <code>[jnewland/git-and-stuff](https://hub.docker.com/r/jnewland/git-and-stuff):latest</code>
