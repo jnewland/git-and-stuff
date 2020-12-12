@@ -1,11 +1,10 @@
-ARG TARGETPLATFORM=linux/amd64
+ARG TARGETPLATFORM
 FROM --platform=$TARGETPLATFORM debian:stable-slim
-ARG TARGETPLATFORM=linux/amd64
+ARG TARGETARCH
+ARG TARGETVARIANT=
 COPY Aptfile* /
 ARG UPDATE_APTFILE=true
-RUN TARGETARCH=$(echo $TARGETPLATFORM | cut -f2 -d/) && \
-    TARGETARM=$(echo $TARGETPLATFORM | cut -f3 -d/ ) && \
-    TARGET="${TARGETARCH}${TARGETARM}" && \
+RUN TARGET="${TARGETARCH}${TARGETVARIANT}" && \
     test -n "$TARGET" && \
     cat /Aptfile > /Aptfile.merged && echo "" >> /Aptfile.merged && \
     touch /Aptfile.$TARGET && cat /Aptfile.$TARGET >> /Aptfile.merged && echo "" >> /Aptfile.merged && \

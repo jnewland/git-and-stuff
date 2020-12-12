@@ -2,6 +2,10 @@
     "build": {
         "dockerfile": "../Dockerfile",
         "context": "..",
+        "args": {
+            "TARGETPLATFORM": "linux/amd64",
+            "TARGETARCH": "amd64"
+        },
     },
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
     "workspaceFolder": "/workspace",
