@@ -12,10 +12,9 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           github-token: ${{ github.token }}
-          # TODO DockerHub
-          # ${{ github.repository }}
           # TODO gcr.io
           images: |
+            ${{ github.repository }}
             docker.pkg.github.com/${{ github.repository }}/${{ github.event.repository.name }}
 
       - uses: actions/cache@v2
@@ -31,6 +30,12 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - uses: docker/login-action@v1 
+        if: secrets.DOCKERHUB_TOKEN != ""
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - uses: docker/build-push-action@v2
         with:
