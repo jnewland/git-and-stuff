@@ -7,7 +7,7 @@
     "workspaceFolder": "/workspace",
     "service": "app",
     "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash",
+        "terminal.integrated.shell.linux": "/bin/bash"
     },
     "extensions": [
         "eamodio.gitlens",
