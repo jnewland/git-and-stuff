@@ -13,6 +13,6 @@ postgresql-client
 procps
 strace
 sudo
-telnet
 tcpdump
+telnet
 vim-nox
