@@ -36,7 +36,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - run: docker pull ghcr.io/${{ github.repository }}:${{ github.event.repository.default_branch }}
+      - run: docker pull ghcr.io/${{ github.repository }}:${{ github.event.repository.default_branch }}-missing || true
 
       - uses: docker/build-push-action@v2
         with:
@@ -45,7 +45,7 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: |
-            ghcr.io/${{ github.repository }}:${{ github.event.repository.default_branch }}
+            ghcr.io/${{ github.repository }}:${{ github.event.repository.default_branch }}-missing
             type=local,src=/tmp/.buildx-cache
           cache-to: mode=max,type=local,dest=/tmp/.buildx-cache
           # Allow aptfile updates on branches that don't publish images
