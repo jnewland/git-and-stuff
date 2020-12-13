@@ -3,6 +3,7 @@
 Sometimes, you want a Docker container with git, bash, ssh, jq, curl, and vim. Or is that just me?
 
 [![docker](https://github.com/jnewland/git-and-stuff/workflows/docker/badge.svg)](https://github.com/jnewland/git-and-stuff/actions?query=workflow%3Adocker)
+[![renovate](https://github.com/jnewland/git-and-stuff/workflows/renovate/badge.svg)](https://github.com/jnewland/git-and-stuff/actions?query=workflow%3Arenovate)
 
 ## GitHub Container Registry
 
