@@ -2,8 +2,8 @@ name: renovate
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: '*'
+    tags-ignore: '*'
   schedule:
     - cron:  '0 */4 * * *'
 jobs:
@@ -11,6 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: renovate-config-validator
+        env:
+          LOG_LEVEL: debug
+        run: |
+          docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL \
+            renovate/renovate:slim renovate-config-validator
+      - name: configure renovate for non-default branch
+        if: github.ref != format('refs/heads/{0}', github.event.repository.default_branch)
+        run: |
+          jq -r ". + {baseBranches: [\"$(echo $GIT_REF | cut -f 3 -d /)\"]}" renovate.json > renovate-with-branch.json
+          mv renovate-with-branch.json renovate.json
       - env:
           RENOVATE_AUTODISCOVER: 'false'
           RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
@@ -18,7 +29,10 @@ jobs:
           LOG_FORMAT: json
         run: |
           docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL -e LOG_FORMAT -e RENOVATE_TOKEN \
-            renovate/renovate:slim ${{ github.repository }} | tee renovate.jsonl
+            renovate/renovate:slim \
+              ${{ github.repository }} \
+              --dry-run ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) }} \
+              --print-config | tee renovate.jsonl
           if grep -i fail renovate.jsonl; then
             echo "::error ::$(grep -i fail renovate.jsonl| jq -r .msg)"
             exit 1
