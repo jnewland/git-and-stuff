@@ -72,8 +72,6 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.CR_PAT }}
         run: |
-          git config --local user.email "hubot@github.com"
-          git config --local user.name "GitHub Actions"
           git add .
           git commit -am "sync Aptfile.lock"
 
