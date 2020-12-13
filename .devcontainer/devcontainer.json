@@ -1,5 +1,6 @@
 {
-    "image": "ghcr.io/jnewland/git-and-stuff:main",
+    "dockerFile": "../Dockerfile",
+    "context": "..",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
     "workspaceFolder": "/workspace",
     "settings": {
