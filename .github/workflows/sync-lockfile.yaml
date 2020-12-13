@@ -35,7 +35,7 @@ jobs:
 
       - run: make check
       - name: sync Aptfile.lock
-        if: failed()
+        if: failure()
         env:
           BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
