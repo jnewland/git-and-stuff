@@ -45,7 +45,8 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: mode=max,type=local,dest=/tmp/.buildx-cache
 
-      - uses: docker/build-push-action@v2
+      - name: build local
+        uses: docker/build-push-action@v2
         with:
           pull: true
           push: false
@@ -58,7 +59,7 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.CR_PAT }}
         run: |
-          docker cp ${{ github.repository }}:/Aptfile.actual Aptfile.lock
+          docker run --rm -it ${{ github.repository }} cat /Aptfile.lock > Aptfile.lock
           git config --local user.email "hubot@github.com"
           git config --local user.name "GitHub Actions"
           git add .
