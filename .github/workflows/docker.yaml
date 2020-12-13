@@ -1,5 +1,7 @@
 name: docker
-on: push
+on:
+  workflow_dispatch:
+  push:
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -44,6 +46,46 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: mode=max,type=local,dest=/tmp/.buildx-cache
-          # Allow aptfile updates on branches that don't publish images
-          build-args: |
-            UPDATE_APTFILE=${{ ! (startsWith(github.ref, 'refs/tags/') || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
+
+      - name: build local
+        uses: docker/build-push-action@v2
+        with:
+          pull: true
+          push: false
+          load: true
+          tags: ${{ github.repository }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+
+      - name: sync Aptfile.lock
+        env:
+          BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker run --rm -i ${{ github.repository }} cat /Aptfile.lock > Aptfile.lock
+          git config --local user.email "hubot@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -am "sync Aptfile.lock" || exit 0
+
+          echo "::error ::Aptfile.lock outdated"
+
+          GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
+          cat >> ~/.netrc <<EOF
+          machine github.com
+            login $GITHUB_USER
+            password $BOT_TOKEN
+          EOF
+          git remote set-url origin "https://github.com/${GITHUB_REPOSITORY}"
+
+          # Push & rebase 5 times
+          rebases=0
+          until [ $rebases -ge 5 ]; do
+            if git push origin HEAD:${GITHUB_REF}; then
+              echo "::error ::Aptfile.lock update pushed. Please re-trigger the docker workflow on this branch."
+              exit 1
+            else
+              git pull --rebase origin ${GITHUB_REF}
+            fi
+            rebases=$[$rebases+1]
+          done
+          exit 1

@@ -1,8 +1,5 @@
 {
-    "build": {
-        "dockerfile": "../Dockerfile",
-        "context": ".."
-    },
+    "image": "ghcr.io/jnewland/git-and-stuff:main",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
     "workspaceFolder": "/workspace",
     "settings": {
@@ -18,6 +15,5 @@
         "ms-vscode.go",
         "sleistner.vscode-fileutils"
     ],
-    "postCreateCommand": "cp /Aptfile.actual /workspace/Aptfile.lock",
     "remoteUser": "app"
 }
