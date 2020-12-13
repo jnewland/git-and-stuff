@@ -1,5 +1,7 @@
 name: docker
-on: push
+on:
+  workflow_dispatch:
+  push:
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -57,7 +59,7 @@ jobs:
 
       - name: sync Aptfile.lock
         env:
-          BOT_TOKEN: ${{ secrets.CR_PAT }}
+          BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker run --rm -i ${{ github.repository }} cat /Aptfile.lock > Aptfile.lock
           git config --local user.email "hubot@github.com"
@@ -79,7 +81,7 @@ jobs:
           rebases=0
           until [ $rebases -ge 5 ]; do
             if git push origin HEAD:${GITHUB_REF}; then
-              echo "::warning ::Aptfile.lock update pushed"
+              echo "::error ::Aptfile.lock update pushed. Please re-trigger the docker workflow on this branch."
               exit 0
             else
               git pull --rebase origin ${GITHUB_REF}
