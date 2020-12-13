@@ -1,4 +1,5 @@
 # https://repology.org/projects/?inrepo=debian_stable
+
 build-essential=12.6
 curl=7.64.0-4+deb10u1
 dnsutils
@@ -20,3 +21,4 @@ tcpdump
 telnet
 util-linux=2.33.1-0.1
 vim-nox
+wget=1.20.1-1.1

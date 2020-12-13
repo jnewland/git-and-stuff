@@ -64,4 +64,40 @@ jobs:
           push: false
           load: true
           cache-from: type=local,src=/tmp/.buildx-cache
-          tags: ${{ github.repository }}
+          tags: ${{ github.event.repository.name }}
+
+      - run: make check
+      - name: sync Aptfile.lock
+        if: failure()
+        env:
+          BOT_TOKEN: ${{ secrets.CR_PAT }}
+          PUSHER_NAME: ${{ github.event.pusher.name }}
+          PUSHER_EMAIL: ${{ github.event.pusher.email }}
+        run: |
+          git config --local user.email "$PUSHER_EMAIL"
+          git config --local user.name "$PUSHER_NAME"
+          git add .
+          git commit -am "sync Aptfile.lock"
+
+          echo "::error ::Aptfile.lock outdated"
+
+          GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
+          cat > ~/.netrc <<EOF
+          machine github.com
+            login $GITHUB_USER
+            password $BOT_TOKEN
+          EOF
+          git remote add github "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+
+          # Push & rebase 5 times
+          rebases=0
+          until [ $rebases -ge 5 ]; do
+            if git push github HEAD:${GITHUB_REF}; then
+              echo "::error ::Aptfile.lock update pushed. Please push another commit to the branch."
+              exit 1
+            else
+              git pull --rebase github ${GITHUB_REF}
+            fi
+            rebases=$[$rebases+1]
+          done
+          exit 1
