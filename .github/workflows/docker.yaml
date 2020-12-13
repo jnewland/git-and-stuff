@@ -71,7 +71,11 @@ jobs:
         if: failure()
         env:
           BOT_TOKEN: ${{ secrets.CR_PAT }}
+          PUSHER_NAME: ${{ github.event.pusher.name }}
+          PUSHER_EMAIL: ${{ github.event.pusher.email }}
         run: |
+          git config --local user.email "$PUSHER_EMAIL"
+          git config --local user.name "$PUSHER_NAME"
           git add .
           git commit -am "sync Aptfile.lock"
 
