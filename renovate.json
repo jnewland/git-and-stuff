@@ -5,7 +5,7 @@
   "regexManagers": [
     {
       "fileMatch": [
-        "(^|/)Aptfile"
+        "(^|/)Aptfile$"
       ],
       "matchStrings": [
         "(?<repologyDepName>.*?)(:(?<platform>.*?))?=(?<currentValue>.*?)\\s"
