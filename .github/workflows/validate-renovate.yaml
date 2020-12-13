@@ -13,7 +13,7 @@ jobs:
           docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL \
             renovate/renovate:slim renovate-config-validator
       - env:
-          RENOVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
           LOG_LEVEL: debug
           LOG_FORMAT: json
         run: |
