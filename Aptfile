@@ -1,19 +1,23 @@
-curl
+# https://repology.org/projects/?inrepo=debian_stable&newest=1
+ca-certificates=20200601~deb10u1
+curl=7.64.0-4+deb10u1
 dnsutils
 git=1:2.20.1-2+deb10u3
 iptables
 iputils-ping
 jq=1.5+dfsg-2+b1
+lsb-release=10.2019051400
 lsof
 netcat
 nmap
 ntpdate
-openssh-client
+openssh-client=1:7.9p1-10+deb10u2
 postgresql-client
 procps
 strace
-sudo
+sudo=1.8.27-1+deb10u2
 tcpdump
 telnet
+tzdata=2020d-0+deb10u1
 util-linux=2.33.1-0.1
 vim-nox
