@@ -62,19 +62,23 @@ jobs:
           git config --local user.email "hubot@github.com"
           git config --local user.name "GitHub Actions"
           git add .
+          git commit -am "sync custom_components" || exit 0
+
+          echo "::error ::Aptfile.lock outdated"
+
           GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
           cat >> ~/.netrc <<EOF
           machine github.com
             login $GITHUB_USER
             password $BOT_TOKEN
           EOF
-          git commit -am "sync custom_components" || exit 0
           git remote set-url origin "https://github.com/${GITHUB_REPOSITORY}"
 
           # Push & rebase 5 times
           rebases=0
           until [ $rebases -ge 5 ]; do
             if git push origin HEAD:${GITHUB_HEAD_REF}; then
+              echo "::warning ::Aptfile.lock update pushed"
               exit 0
             else
               git pull --rebase origin ${GITHUB_HEAD_REF}
