@@ -9,5 +9,5 @@ jobs:
       - uses: actions/checkout@v2
       - run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL=debug renovate/renovate:slim renovate-config-validator
       - env:
-          GITHUB_COM_TOKEN: ${{ secrets.CR_PAT }}
-        run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL=debug -e $GITHUB_COM_TOKEN renovate/renovate:slim ${{ github.repository }} --dry-run
+          RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
+        run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL=debug -e $RENOVATE_TOKEN renovate/renovate:slim ${{ github.repository }} --dry-run
