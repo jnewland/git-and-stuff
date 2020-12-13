@@ -44,3 +44,40 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: mode=max,type=local,dest=/tmp/.buildx-cache
+
+      - uses: docker/build-push-action@v2
+        with:
+          pull: true
+          push: false
+          tags: ${{ github.repository }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+
+      - name: sync Aptfile.lock
+        env:
+          BOT_TOKEN: ${{ secrets.CR_PAT }}
+        run: |
+          docker cp ${{ github.repository }}:/Aptfile.actual Aptfile.lock
+          git config --local user.email "hubot@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
+          cat >> ~/.netrc <<EOF
+          machine github.com
+            login $GITHUB_USER
+            password $BOT_TOKEN
+          EOF
+          git commit -am "sync custom_components" || exit 0
+          git remote set-url origin "https://github.com/${GITHUB_REPOSITORY}"
+
+          # Push & rebase 5 times
+          rebases=0
+          until [ $rebases -ge 5 ]; do
+            if git push origin HEAD:${GITHUB_HEAD_REF}; then
+              exit 0
+            else
+              git pull --rebase origin ${GITHUB_HEAD_REF}
+            fi
+            rebases=$[$rebases+1]
+          done
+          exit 1
