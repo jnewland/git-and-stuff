@@ -8,11 +8,11 @@
         "(^|/)Aptfile$"
       ],
       "matchStrings": [
-        "(?<packageName>.*?)(:(?<platform>.*?))?=(?<currentValue>.*?)( # Source: (?<sourceName>.*?))?\\s"
+        "(?<packageName>.*?)(:(?<platform>.*?))?=(?<currentValue>.*?)( #(\\ssource=(?<sourceName>.*?))?(\\sversioning=(?<versioning>.*?)?)?)?\\s"
       ],
       "datasourceTemplate": "repology",
       "depNameTemplate": "{{#if sourceName}}debian_stable/{{sourceName}}{{else}}debian_stable/{{packageName}}{{/if}}",
-      "versioningTemplate": "loose"
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}loose{{/if}}"
     }
   ],
   "packageRules": [
