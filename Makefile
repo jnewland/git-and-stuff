@@ -6,7 +6,7 @@ default: build check
 
 .PHONY: check
 check:
-	docker run --rm -it $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock
+	docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock
 	git diff --exit-code Aptfile.lock
 
 .PHONY: build
