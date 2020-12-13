@@ -19,7 +19,7 @@ jobs:
         run: |
           docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL -e LOG_FORMAT -e RENOVATE_TOKEN \
             renovate/renovate:slim ${{ github.repository }} --dry-run > renovate.jsonl
-          if grep failed renovate.jsonl;
+          if grep failed renovate.jsonl; then
             echo "::error ::$(grep failed renovate.jsonl| jq -r .msg)"
             exit 1
           fi
