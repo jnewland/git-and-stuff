@@ -93,7 +93,7 @@ jobs:
           rebases=0
           until [ $rebases -ge 5 ]; do
             if git push github HEAD:${GITHUB_REF}; then
-              echo "::error ::Aptfile.lock update pushed. Please re-trigger the sync-lock workflow on this branch to confirm."
+              echo "::error ::Aptfile.lock update pushed. Please push another commit to the branch."
               exit 1
             else
               git pull --rebase github ${GITHUB_REF}
