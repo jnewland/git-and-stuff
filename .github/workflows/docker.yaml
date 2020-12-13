@@ -49,6 +49,7 @@ jobs:
         with:
           pull: true
           push: false
+          load: true
           tags: ${{ github.repository }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
