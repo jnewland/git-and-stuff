@@ -3,7 +3,8 @@ dnsutils
 git-core
 iptables
 iputils-ping
-jq
+jq=1.5+dfsg-2+b1
+git=1:2.20.1-2+deb10u3
 lsof
 netcat
 nmap
