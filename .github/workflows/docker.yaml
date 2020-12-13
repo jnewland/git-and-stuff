@@ -66,11 +66,11 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           tags: ${{ github.repository }}
 
-      - run: make
+      - run: make check
       - name: sync Aptfile.lock
         if: failure()
         env:
-          BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BOT_TOKEN: ${{ secrets.CR_PAT }}
         run: |
           git config --local user.email "hubot@github.com"
           git config --local user.name "GitHub Actions"
