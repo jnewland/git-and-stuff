@@ -8,5 +8,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e $GITHUB_TOKEN renovate/renovate:slim ${{ github.repository }} --dry-run
+          GITHUB_COM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e $GITHUB_COM_TOKEN renovate/renovate:slim ${{ github.repository }} --dry-run
