@@ -1,10 +1,9 @@
 curl
 dnsutils
-git-core
+git=1:2.20.1-2+deb10u3
 iptables
 iputils-ping
 jq=1.5+dfsg-2+b1
-git=1:2.20.1-2+deb10u3
 lsof
 netcat
 nmap
@@ -14,6 +13,6 @@ postgresql-client
 procps
 strace
 sudo
-telnet
 tcpdump
+telnet
 vim-nox
