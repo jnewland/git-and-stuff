@@ -59,7 +59,7 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.CR_PAT }}
         run: |
-          docker run --rm -it ${{ github.repository }} cat /Aptfile.lock > Aptfile.lock
+          docker run --rm -i ${{ github.repository }} cat /Aptfile.lock > Aptfile.lock
           git config --local user.email "hubot@github.com"
           git config --local user.name "GitHub Actions"
           git add .
