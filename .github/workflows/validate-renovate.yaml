@@ -10,4 +10,4 @@ jobs:
       - run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL=debug renovate/renovate:slim renovate-config-validator
       - env:
           RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
-        run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL=debug -e $RENOVATE_TOKEN renovate/renovate:slim ${{ github.repository }} --dry-run
+        run: docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL=debug -e RENOVATE_TOKEN renovate/renovate:slim ${{ github.repository }} --dry-run
