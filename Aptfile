@@ -15,4 +15,5 @@ strace
 sudo
 tcpdump
 telnet
+util-linux=2.33.1-0.1
 vim-nox
