@@ -12,7 +12,7 @@
       ],
       "datasourceTemplate": "repology",
       "depNameTemplate": "{{#if sourceName}}debian_stable/{{sourceName}}{{else}}debian_stable/{{packageName}}{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}loose{{/if}}"
     }
   ],
   "packageRules": [
