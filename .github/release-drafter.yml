@@ -12,10 +12,14 @@ version-resolver:
       - 'patch'
   default: patch
 template: |
+  ## Changes
+
   $CHANGES
   
   ## Docker Images
-  
+
+  [![docker](https://github.com/jnewland/git-and-stuff/workflows/docker/badge.svg?branch=v$RESOLVED_VERSION)](https://github.com/jnewland/git-and-stuff/actions?query=workflow%3Adocker&branch%3Av$RESOLVED_VERSION)
+
   ```
   ghcr.io/jnewland/git-and-stuff:v$RESOLVED_VERSION
   jnewland/git-and-stuff:v$RESOLVED_VERSION
