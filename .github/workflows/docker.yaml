@@ -58,36 +58,3 @@ jobs:
           load: true
           cache-from: type=local,src=/tmp/.buildx-cache
           tags: ${{ github.repository }}
-
-      - name: sync Aptfile.lock
-        env:
-          BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker run --rm -i ${{ github.repository }} cat /Aptfile.lock > Aptfile.lock
-          git config --local user.email "hubot@github.com"
-          git config --local user.name "GitHub Actions"
-          git add .
-          git commit -am "sync Aptfile.lock" || exit 0
-
-          echo "::error ::Aptfile.lock outdated"
-
-          GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
-          cat >> ~/.netrc <<EOF
-          machine github.com
-            login $GITHUB_USER
-            password $BOT_TOKEN
-          EOF
-          git remote set-url origin "https://github.com/${GITHUB_REPOSITORY}"
-
-          # Push & rebase 5 times
-          rebases=0
-          until [ $rebases -ge 5 ]; do
-            if git push origin HEAD:${GITHUB_REF}; then
-              echo "::error ::Aptfile.lock update pushed. Please re-trigger the docker workflow on this branch."
-              exit 1
-            else
-              git pull --rebase origin ${GITHUB_REF}
-            fi
-            rebases=$[$rebases+1]
-          done
-          exit 1
