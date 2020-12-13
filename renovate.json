@@ -8,7 +8,7 @@
         "(^|/)Aptfile"
       ],
       "matchStrings": [
-        "(?<repologyDepName>.*?)=(?<currentValue>.*?)\\s"
+        "(?<repologyDepName>.*?)(:(?<platform>.*?))?=(?<currentValue>.*?)\\s"
       ],
       "datasourceTemplate": "repology",
       "depNameTemplate": "{{#if depName}}{{depName}}{{else}}debian_stable/{{repologyDepName}}{{/if}}",
