@@ -11,17 +11,18 @@
 #
 # TODO
 #
+# * determine how to handle packages w/ ambiguous versions
 # * support :repo: hints ala Heroku
 
 curl=7.64.0-4+deb10u1
 dnsutils
-dpkg-dev=1.19.7 # source=dpkg versioning=semver
 git=1:2.20.1-2+deb10u3
 iptables
 iputils-ping
 jq=1.5+dfsg-2+b1
 lsb-release=10.2019051400 # source=lsb
 lsof
+make=4.2.1-1.2 # source=make-dfsg
 netcat
 nmap
 ntpdate
