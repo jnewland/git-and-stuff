@@ -38,8 +38,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - run: docker pull ghcr.io/${{ github.repository }}:${{ github.event.repository.default_branch }} || true
-
       - uses: docker/build-push-action@v2
         with:
           pull: true
@@ -47,19 +45,27 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: |
-            ghcr.io/${{ github.repository }}:${{ github.event.repository.default_branch }}
+            type=registry,ref=${{ github.repository_owner }}:cache
             type=local,src=/tmp/.buildx-cache
           cache-to: mode=max,type=local,dest=/tmp/.buildx-cache
 
-      - name: build local
+      - name: push cache image
         uses: docker/build-push-action@v2
         with:
-          pull: true
+          pull: false
+          push: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=inline
+          tags: ${{ github.repository_owner }}:cache
+
+      - name: export local image
+        uses: docker/build-push-action@v2
+        with:
+          pull: false
           push: false
           load: true
-          tags: ${{ github.repository }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
+          tags: ${{ github.repository }}
 
       - name: sync Aptfile.lock
         env:
