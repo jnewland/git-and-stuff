@@ -1,19 +1,11 @@
 {
     "dockerFile": "../Dockerfile",
     "context": "..",
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
-    "workspaceFolder": "/workspace",
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },
     "extensions": [
-        "eamodio.gitlens",
-        "github.vscode-pull-request-github",
-        "ms-azuretools.vscode-docker",
-        "ms-vsliveshare.vsliveshare",
         "vscode-icons-team.vscode-icons",
-        "visualstudioexptteam.vscodeintellicode",
-        "ms-vscode.go",
         "sleistner.vscode-fileutils"
     ],
     "remoteUser": "app"
