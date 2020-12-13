@@ -82,7 +82,7 @@ jobs:
           until [ $rebases -ge 5 ]; do
             if git push origin HEAD:${GITHUB_REF}; then
               echo "::error ::Aptfile.lock update pushed. Please re-trigger the docker workflow on this branch."
-              exit 0
+              exit 1
             else
               git pull --rebase origin ${GITHUB_REF}
             fi
