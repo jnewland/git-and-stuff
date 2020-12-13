@@ -22,7 +22,7 @@ iputils-ping
 jq=1.5+dfsg-2+b1
 lsb-release=10.2019051400 # source=lsb
 lsof
-make=4.2.1-1.2 # source=make-dfsg
+make=4.2.1-1.2
 netcat
 nmap
 ntpdate
