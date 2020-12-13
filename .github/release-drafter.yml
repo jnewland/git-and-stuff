@@ -22,4 +22,5 @@ template: |
 
   ```
   ghcr.io/jnewland/git-and-stuff:v$RESOLVED_VERSION
+  jnewland/git-and-stuff:v$RESOLVED_VERSION
   ```
