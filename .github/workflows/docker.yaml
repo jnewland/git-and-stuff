@@ -49,6 +49,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=inline
           tags: ghcr.io/${{ github.repository }}:cache
+          labels: ${{ steps.docker_meta.outputs.labels }}
 
       - name: export local image
         uses: docker/build-push-action@v2
