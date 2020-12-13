@@ -1,8 +1,8 @@
 # https://repology.org/projects/?inrepo=debian_stable
 
-build-essential=12.6
 curl=7.64.0-4+deb10u1
 dnsutils
+dpkg-dev=1.19.7 # Source: dpkg
 git=1:2.20.1-2+deb10u3
 iptables
 iputils-ping
