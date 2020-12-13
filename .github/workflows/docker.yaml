@@ -85,7 +85,7 @@ jobs:
             login $GITHUB_USER
             password $BOT_TOKEN
           EOF
-          git remote set-url github "https://github.com/${GITHUB_REPOSITORY}"
+          git remote add github "https://github.com/${GITHUB_REPOSITORY}"
 
           # Push & rebase 5 times
           rebases=0
