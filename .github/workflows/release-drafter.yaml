@@ -3,7 +3,7 @@ name: release-drafter
 on:
   push:
     branches:
-      - $default-branch
+      - main
 
 jobs:
   release-drafter:
