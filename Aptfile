@@ -1,18 +1,31 @@
+# Usage
+#
+# repology-package-name=version
+#
 # https://repology.org/projects/?inrepo=debian_stable
+#
+# Optional per-package configuration via comment extensions
+#
+# * source: use a different source name to track the version of this package (for example https://packages.debian.org/buster/make)
+# * versioning: defaults to loose (https://docs.renovatebot.com/modules/versioning/#loose-versioning)
+#
+# TODO
+#
+# * support :repo: hints ala Heroku
 
 curl=7.64.0-4+deb10u1
 dnsutils
-dpkg-dev=1.19.7 # Source: dpkg
+dpkg-dev=1.19.7 # source=dpkg versioning=semver
 git=1:2.20.1-2+deb10u3
 iptables
 iputils-ping
 jq=1.5+dfsg-2+b1
-lsb-release=10.2019051400 # Source: lsb
+lsb-release=10.2019051400 # source=lsb
 lsof
 netcat
 nmap
 ntpdate
-openssh-client=1:7.9p1-10+deb10u2 # Source: openssh
+openssh-client=1:7.9p1-10+deb10u2 # source=openssh
 postgresql-client
 procps
 strace
