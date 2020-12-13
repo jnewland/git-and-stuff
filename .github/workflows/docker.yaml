@@ -80,21 +80,21 @@ jobs:
           echo "::error ::Aptfile.lock outdated"
 
           GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
-          cat >> ~/.netrc <<EOF
+          cat > ~/.netrc <<EOF
           machine github.com
             login $GITHUB_USER
             password $BOT_TOKEN
           EOF
-          git remote set-url origin "https://github.com/${GITHUB_REPOSITORY}"
+          git remote set-url github "https://github.com/${GITHUB_REPOSITORY}"
 
           # Push & rebase 5 times
           rebases=0
           until [ $rebases -ge 5 ]; do
-            if git push origin HEAD:${GITHUB_REF}; then
+            if git push github HEAD:${GITHUB_REF}; then
               echo "::error ::Aptfile.lock update pushed. Please re-trigger the sync-lock workflow on this branch to confirm."
               exit 1
             else
-              git pull --rebase origin ${GITHUB_REF}
+              git pull --rebase github ${GITHUB_REF}
             fi
             rebases=$[$rebases+1]
           done
