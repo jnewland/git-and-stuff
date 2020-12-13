@@ -1,18 +1,22 @@
-curl
+# https://repology.org/projects/?inrepo=debian_stable
+
+curl=7.64.0-4+deb10u1
 dnsutils
-git-core
+git=1:2.20.1-2+deb10u3
 iptables
 iputils-ping
-jq
+jq=1.5+dfsg-2+b1
+lsb-release=10.2019051400 # Source: lsb
 lsof
 netcat
 nmap
 ntpdate
-openssh-client
+openssh-client=1:7.9p1-10+deb10u2 # Source: openssh
 postgresql-client
 procps
 strace
-sudo
-telnet
+sudo=1.8.27-1+deb10u2
 tcpdump
+telnet
+util-linux=2.33.1-0.1
 vim-nox

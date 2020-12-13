@@ -2,22 +2,35 @@
   "labels": ["renovate"],
   "extends": ["config:base"],
   "rebaseWhen": "conflicted",
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "(^|/)Aptfile$"
+      ],
+      "matchStrings": [
+        "(?<packageName>.*?)(:(?<platform>.*?))?=(?<currentValue>.*?)( # Source: (?<sourceName>.*?))?\\s"
+      ],
+      "datasourceTemplate": "repology",
+      "depNameTemplate": "{{#if sourceName}}debian_stable/{{sourceName}}{{else}}debian_stable/{{packageName}}{{/if}}",
+      "versioningTemplate": "loose"
+    }
+  ],
   "packageRules": [
     {
-      "updateTypes": ["major"],
-      "labels": ["major"]
-    },
-    {
-      "updateTypes": ["minor"],
-      "labels": ["minor"]
-    },
-    {
-      "updateTypes": ["patch"],
-      "labels": ["patch"]
+      "datasources": [
+        "repology"
+      ],
+      "packagePatterns": [
+        "^debian_stable/"
+      ],
+      "separateMajorMinor": false,
+      "groupName": "packages",
+      "groupSlug": "packages"
     },
     {
       "datasources": ["docker"],
-      "labels": ["docker"]
+      "groupName": "packages",
+      "groupSlug": "packages"
     },
     {
       "packageNames": "renovatebot/github-action",
