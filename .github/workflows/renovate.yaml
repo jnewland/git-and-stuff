@@ -20,7 +20,7 @@ jobs:
       - name: configure renovate for non-default branch
         if: github.ref != format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
-          jq -r ". + {baseBranches: [\"$(echo $GIT_REF | cut -f 3 -d /)\"]}" renovate.json > renovate-with-branch.json
+          jq -r ". + {baseBranch: \"$(echo $GIT_REF | cut -f 3 -d /)\"}" renovate.json | tee renovate-with-branch.json
           mv renovate-with-branch.json renovate.json
       - env:
           RENOVATE_AUTODISCOVER: 'false'
