@@ -15,14 +15,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/renovate/cache
-          key: ${{ runner.os }}-v1-
+          key: ${{ runner.os }}-v1-${{ job.container.id }}
+          restore-keys: |
+            ${{ runner.os }}-v1-
+
       - env:
           RENOVATE_AUTODISCOVER: 'false'
           RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
           LOG_LEVEL: debug
           LOG_FORMAT: json
         run: |
-          docker run --rm -i -v $(pwd):$(pwd) -w $(pwd) -e LOG_LEVEL -e LOG_FORMAT -e RENOVATE_TOKEN \
+          docker run --rm -i -v $(pwd):$(pwd) -v /tmp/renovate/cache:/tmp/renovate/cache -w $(pwd) -e LOG_LEVEL -e LOG_FORMAT -e RENOVATE_TOKEN \
             renovate/renovate:slim ${{ github.repository }} | tee renovate.jsonl
           if grep -i fail renovate.jsonl; then
             echo "::warning ::$(grep -i fail renovate.jsonl| jq -r .msg)"
