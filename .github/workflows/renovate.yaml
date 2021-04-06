@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: renovate cache
+        uses: actions/cache@v2
+        with:
+          path: /tmp/renovate/cache
+          key: ${{ runner.os }}-v1-
       - env:
           RENOVATE_AUTODISCOVER: 'false'
           RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
