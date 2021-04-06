@@ -15,7 +15,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/renovate/cache
-          key: ${{ runner.os }}-v1-
+          key: ${{ runner.os }}-v1-${{ job.container.id }}
+          restore-keys: |
+            ${{ runner.os }}-v1-
+
       - env:
           RENOVATE_AUTODISCOVER: 'false'
           RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
