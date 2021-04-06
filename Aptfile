@@ -14,7 +14,8 @@
 # * determine how to handle packages w/ ambiguous versions
 # * support :repo: hints ala Heroku
 
-curl=7.64.0-4+deb10u1
+build-essential=12.6
+curl=7.64.0-4+deb10u2
 dnsutils
 git=1:2.20.1-2+deb10u3
 iptables
