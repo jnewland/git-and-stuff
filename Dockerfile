@@ -1,6 +1,6 @@
 FROM debian:stable-slim@sha256:28d81da3f6685d971688ce7efe3c990d9ffe4039ffeae81f5b47c6cdcc3dd585
 COPY Aptfile* /
-RUN apt-get update -qq && \
+RUN apt-get clean && apt-get update -qq && \
     : install the packages in the lockfile && \
     apt-get -y install $(cat ./Aptfile.lock | sed 's/#.*//' | grep -v -s -e "^:repo:" | tr '\n' ' ') || true && \
     : install the packages in the request file, should be a noop && \
