@@ -15,7 +15,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/renovate/cache
-          key: ${{ runner.os }}-v1-${{ job.container.id }}
+          key: ${{ runner.os }}-v1-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-v1-
 
