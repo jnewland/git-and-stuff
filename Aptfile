@@ -14,7 +14,8 @@
 # * determine how to handle packages w/ ambiguous versions
 # * support :repo: hints ala Heroku
 
-curl=7.64.0-4+deb10u1
+build-essential=12.6
+curl=7.64.0-4+deb10u2
 dnsutils
 git=1:2.20.1-2+deb10u3
 iptables
@@ -30,7 +31,7 @@ openssh-client=1:7.9p1-10+deb10u2 # source=openssh
 postgresql-client
 procps
 strace
-sudo=1.8.27-1+deb10u2
+sudo=1.8.27-1+deb10u3
 tcpdump
 telnet
 util-linux=2.33.1-0.1
