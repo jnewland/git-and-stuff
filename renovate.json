@@ -34,7 +34,7 @@
     },
     {
       "packageNames": "renovatebot/github-action",
-      "extends": ["schedule:monthly"]
+      "extends": ["schedule:weekly"]
     }
   ]
 }
