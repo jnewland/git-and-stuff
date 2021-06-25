@@ -31,7 +31,7 @@ jobs:
           if grep -i fail renovate.jsonl; then
             echo "::warning ::$(grep -i fail renovate.jsonl| jq -r .msg)"
           fi
-          if grep -i err renovate.jsonl; then
-            echo "::error ::$(grep -i err renovate.jsonl| jq -r .msg)"
+          if grep -i '"err"' renovate.jsonl; then
+            echo "::error ::$(grep -i '"err"' renovate.jsonl| jq -r .msg)"
             exit 1
           fi
