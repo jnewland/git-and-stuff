@@ -22,7 +22,7 @@ jobs:
 
       - env:
           RENOVATE_AUTODISCOVER: 'false'
-          RENOVATE_TOKEN: ${{ secrets.CR_PAT }}
+          RENOVATE_TOKEN: ${{ secrets.UR_BOT_TOKEN }}
           LOG_LEVEL: debug
           LOG_FORMAT: json
         run: |
