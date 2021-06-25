@@ -30,6 +30,7 @@ ntpdate
 openssh-client=1:7.9p1-10+deb10u2 # source=openssh
 postgresql-client
 procps
+rsync
 strace
 sudo=1.8.27-1+deb10u3
 tcpdump
