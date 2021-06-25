@@ -26,7 +26,8 @@ jobs:
           LOG_LEVEL: debug
           LOG_FORMAT: json
         run: |
-          docker run --rm -i -v $(pwd):$(pwd) -v /tmp/renovate/cache:/tmp/renovate/cache -w $(pwd) -e LOG_LEVEL -e LOG_FORMAT -e RENOVATE_TOKEN \
+          set -x
+          docker run --rm -i --user $UID -v $(pwd):$(pwd) -v /tmp/renovate/cache:/tmp/renovate/cache -w $(pwd) -e LOG_LEVEL -e LOG_FORMAT -e RENOVATE_TOKEN \
             renovate/renovate:slim ${{ github.repository }} | tee renovate.jsonl
           if grep -i fail renovate.jsonl; then
             echo "::warning ::$(grep -i fail renovate.jsonl| jq -r .msg)"
