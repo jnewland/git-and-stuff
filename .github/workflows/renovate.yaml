@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: mkdir -p /tmp/renovate
       - name: renovate cache
         uses: actions/cache@v2
         with:
@@ -29,4 +30,8 @@ jobs:
             renovate/renovate:slim ${{ github.repository }} | tee renovate.jsonl
           if grep -i fail renovate.jsonl; then
             echo "::warning ::$(grep -i fail renovate.jsonl| jq -r .msg)"
+          fi
+          if grep -i err renovate.jsonl; then
+            echo "::error ::$(grep -i err renovate.jsonl| jq -r .msg)"
+            exit 1
           fi
