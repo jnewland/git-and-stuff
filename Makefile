@@ -6,23 +6,12 @@ default: build check
 
 .PHONY: check
 check: generate
-	[ -f /Aptfile.lock ] && git diff --exit-code Aptfile.lock
+	git diff --exit-code Aptfile.lock
 
 .PHONY: build
 build:
-	if [ -f /Aptfile.lock ]; then \
-		sudo apt-get update; \
-		sudo apt-get -y install $(cat ./Aptfile | sed 's/#.*//' | grep -v -s -e "^:repo:" | tr '\n' ' '); \
-		dpkg -l | grep ii | awk '{print $$2 "=" $$3}' > Aptfile.lock; \
-	else \
-		docker build -t $(current_dir) .; \
-		docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock; \
-	fi
+	docker build -t $(current_dir) .
 
 .PHONY: generate
 generate: build
-	if [ -f /Aptfile.lock ]; then \
-		dpkg -l | grep ii | awk '{print $$2 "=" $$3}' > Aptfile.lock; \
-	else \
-		docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock; \
-	fi
+	docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock
