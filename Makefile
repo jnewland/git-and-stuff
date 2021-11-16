@@ -10,19 +10,8 @@ check: generate
 
 .PHONY: build
 build:
-	if [ -f /Aptfile.lock ]; then \
-		sudo apt-get update; \
-		sudo apt-get -y install $(cat ./Aptfile | sed 's/#.*//' | grep -v -s -e "^:repo:" | tr '\n' ' '); \
-		dpkg -l | grep ii | awk '{print $$2 "=" $$3}' > Aptfile.lock; \
-	else \
-		docker build -t $(current_dir) .; \
-		docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock; \
-	fi
+	docker inspect $(current_dir) || docker build -t $(current_dir) .
 
 .PHONY: generate
-generate:
-	if [ -f /Aptfile.lock ]; then \
-		dpkg -l | grep ii | awk '{print $$2 "=" $$3}' > Aptfile.lock; \
-	else \
-		docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock; \
-	fi
+generate: build
+	docker run --rm -i $(current_dir) cat /Aptfile.lock | tr -d '\r' > Aptfile.lock

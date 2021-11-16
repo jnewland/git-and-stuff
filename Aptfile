@@ -14,27 +14,27 @@
 # * determine how to handle packages w/ ambiguous versions
 # * support :repo: hints ala Heroku
 
-build-essential=12.6
-curl=7.64.0-4+deb10u2
+build-essential
+curl
 dnsutils
-git=1:2.20.1-2+deb10u3
+git
 iptables
 iputils-ping
-jq=1.5+dfsg-2+b1
-lsb-release=10.2019051400 # source=lsb
+jq
+lsb-release
 lsof
-make=4.2.1-1.2
+make
 netcat
 nmap
 ntpdate
-openssh-client=1:7.9p1-10+deb10u2 # source=openssh
+openssh-client
 postgresql-client
 procps
 rsync
 strace
-sudo=1.8.27-1+deb10u3
+sudo
 tcpdump
 telnet
-util-linux=2.33.1-0.1
+util-linux
 vim-nox
-wget=1.20.1-1.1
+wget
