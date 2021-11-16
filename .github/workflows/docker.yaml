@@ -48,9 +48,8 @@ jobs:
             type=gha
           cache-to: |
             mode=max,type=local,dest=/tmp/.buildx-cache
-            type=gha,mode=max
 
-      - name: export local image
+      - name: load local image
         uses: docker/build-push-action@v2
         with:
           pull: false
@@ -58,6 +57,7 @@ jobs:
           load: true
           cache-from: type=local,src=/tmp/.buildx-cache
           tags: ${{ github.event.repository.name }}
+          cache-to: type=gha,mode=max
 
       - run: make check
       - name: sync Aptfile.lock
