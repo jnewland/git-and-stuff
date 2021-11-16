@@ -12,7 +12,7 @@
         "(?<packageName>.*?)(:(?<platform>.*?))?=(?<currentValue>.*?)( #(\\ssource=(?<sourceName>.*?))?(\\sversioning=(?<versioning>.*?)?)?)?\\s"
       ],
       "datasourceTemplate": "repology",
-      "depNameTemplate": "{{#if sourceName}}debian_stable/{{sourceName}}{{else}}debian_stable/{{packageName}}{{/if}}",
+      "depNameTemplate": "{{#if sourceName}}debian_11/{{sourceName}}{{else}}debian_11/{{packageName}}{{/if}}",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}loose{{/if}}"
     }
   ],
@@ -22,7 +22,7 @@
         "repology"
       ],
       "packagePatterns": [
-        "^debian_stable/"
+        "^debian_11/"
       ],
       "separateMajorMinor": false,
       "groupName": "packages",
