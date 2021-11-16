@@ -10,7 +10,7 @@ check: generate
 
 .PHONY: build
 build:
-	docker build -t $(current_dir) .
+	docker inspect $(current_dir) || docker build -t $(current_dir) .
 
 .PHONY: generate
 generate: build
