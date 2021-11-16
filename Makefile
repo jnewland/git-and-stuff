@@ -6,7 +6,7 @@ default: build check
 
 .PHONY: check
 check: generate
-	git diff --exit-code Aptfile.lock
+	[ -f /Aptfile.lock ] && git diff --exit-code Aptfile.lock
 
 .PHONY: build
 build:
@@ -20,7 +20,7 @@ build:
 	fi
 
 .PHONY: generate
-generate:
+generate: build
 	if [ -f /Aptfile.lock ]; then \
 		dpkg -l | grep ii | awk '{print $$2 "=" $$3}' > Aptfile.lock; \
 	else \
