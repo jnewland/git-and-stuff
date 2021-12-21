@@ -1,4 +1,4 @@
-FROM debian:stable-slim@sha256:92b0a2f88b6f2e38e839758b4dcf363a27597d99966588c7fda4ef9442f5a46c
+FROM debian:stable-slim@sha256:608a500bd0d397338ec0e8579649985fb2ceb85c07d183b3abaf46d233e1e6eb
 COPY Aptfile* /
 RUN apt-get clean && apt-get update -qq && \
     : install the packages in the lockfile && \
