@@ -1,3 +1,4 @@
+# Debian 11.2
 FROM debian:stable-slim@sha256:d721cdc17ce7e73a42c567ca3882c059d6ed1fe55eee12f9591095947ece3850
 COPY Aptfile* /
 RUN apt-get clean && apt-get update -qq && \
