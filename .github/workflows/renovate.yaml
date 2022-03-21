@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: mkdir -p /tmp/renovate
       - name: renovate cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/renovate/cache
           key: ${{ runner.os }}-v1-${{ github.run_id }}
