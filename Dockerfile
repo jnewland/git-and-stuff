@@ -1,5 +1,5 @@
 # Debian 11.2 20220418, see https://hub.docker.com/_/debian
-FROM debian:stable-slim@sha256:bd53ab674a48598863d4902d867fab6fa8f1da4f67a2d14b32785398e40c5f18
+FROM debian:stable-slim@sha256:6e6da916a82e394647b7a4353d3894fcf15b1e0888b29e12aa411377b5647d9c
 COPY Aptfile* /
 RUN apt-get clean && apt-get update -qq && \
     : install the packages in the lockfile && \
