@@ -32,7 +32,6 @@ jobs:
             type=raw,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }},value=${{ github.event.repository.default_branch }}
             type=raw,enable=${{ contains(github.event.pull_request.labels.*.name, 'docker:pr-image') }},value=pr-${{ github.event.pull_request.number }}
           images: |
-            ${{ github.repository }}
             ghcr.io/${{ github.repository }}
       - name: Cache var-cache-apt
         uses: actions/cache@v3

@@ -9,3 +9,17 @@ Sometimes, you want a Docker container with git, bash, ssh, jq, curl, and vim. O
 
 - <code>[ghcr.io/jnewland/git-and-stuff](https://github.com/users/jnewland/packages/container/package/git-and-stuff):main</code> tracks the default branch of this repo
 - <code>[ghcr.io/jnewland/git-and-stuff](https://github.com/users/jnewland/packages/container/package/git-and-stuff):latest</code> tracks the latest [release](https://github.com/jnewland/git-and-stuff/releases)
+
+## Usage
+
+This container is great for use with [`kubectl debug`](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container). For example, to debug a pod with a broken image:
+
+```console
+$ kubectl debug -it <pod> --image=ghcr.io/jnewland/git-and-stuff:latest --target=<container>
+```
+
+Or to debug a node:
+
+```console
+$ kubectl debug -it node/<node> --image=ghcr.io/jnewland/git-and-stuff:latest
+```
