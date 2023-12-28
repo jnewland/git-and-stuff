@@ -15,7 +15,7 @@ Sometimes, you want a Docker container with git, bash, ssh, jq, curl, and vim. O
 This container is great for use with [`kubectl debug`](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container). For example, to debug a pod with a broken image:
 
 ```console
-$ kubectl debug -it <pod> --image=ghcr.io/jnewland/git-and-stuff:latest --target=<container>
+$ kubectl debug -it <pod> --image=ghcr.io/jnewland/git-and-stuff:latest
 ```
 
 Or to debug a node:
