@@ -20,11 +20,11 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3
+      - uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3
       - id: docker_meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@9dc751fe249ad99385a2583ee0d084c400eee04e # v5
         with:
           tags: |
             type=ref,event=tag
@@ -33,37 +33,37 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
       - name: Cache var-cache-apt
-        uses: actions/cache@v3
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3
         with:
           path: var-cache-apt
           key: var-cache-apt-${{ hashFiles('Dockerfile') }}
           restore-keys: |
             var-cache-apt-
       - name: Cache var-lib-apt
-        uses: actions/cache@v3
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3
         with:
           path: var-lib-apt
           key: var-lib-apt-${{ hashFiles('Dockerfile') }}
           restore-keys: |
             var-lib-apt-
       - name: inject var-cache-apt into docker
-        uses: reproducible-containers/buildkit-cache-dance@v2.1.3
+        uses: reproducible-containers/buildkit-cache-dance@a7e6c84254deea63f27ad452032d8fdd4815301a # v2.1.3
         with:
           cache-source: var-cache-apt
           cache-target: /var/cache/apt
       - name: inject var-lib-apt into docker
-        uses: reproducible-containers/buildkit-cache-dance@v2.1.3
+        uses: reproducible-containers/buildkit-cache-dance@a7e6c84254deea63f27ad452032d8fdd4815301a # v2.1.3
         with:
           cache-source: var-lib-apt
           cache-target: /var/lib/apt
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
         with:
           context: .
           pull: true
