@@ -30,11 +30,15 @@ jobs:
         with:
           path: var-cache-apt
           key: var-cache-apt-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            var-cache-apt-
       - name: Cache var-lib-apt
         uses: actions/cache@v3
         with:
           path: var-lib-apt
           key: var-lib-apt-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            var-lib-apt-
       - name: inject var-cache-apt into docker
         uses: reproducible-containers/buildkit-cache-dance@v2.1.3
         with:
