@@ -14,12 +14,13 @@ RUN \
   echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/keep-cache && \
   : "Fetching the snapshot and installing ca-certificates in one command" && \
   apt-get install --update --snapshot "${snapshot}" -o Acquire::Check-Valid-Until=false -o Acquire::https::Verify-Peer=false -y ca-certificates && \
-  : "Installing gcc" && \
+  : "Installing sorted packages" && \
   apt-get install --snapshot "${snapshot}" -y \
     build-essential \
     curl \
     dnsutils \
     git \
+    htop \
     iptables \
     iputils-ping \
     jq \
