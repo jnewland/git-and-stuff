@@ -23,6 +23,8 @@ jobs:
           images: |
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
+      - name: Checkout code so that we can hash the Dockerfile
+        uses: actions/checkout@v4
       - name: Cache var-cache-apt
         uses: actions/cache@v3
         with:
