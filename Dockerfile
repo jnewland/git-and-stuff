@@ -1,4 +1,4 @@
-# Base image must be Debian 13 (trixie) or later: https://salsa.debian.org/apt-team/apt/-/merge_requests/291
+# Requires https://salsa.debian.org/apt-team/apt/-/merge_requests/291
 FROM debian:trixie-slim
 ENV DEBIAN_FRONTEND=noninteractive
 # from https://github.com/reproducible-containers
