@@ -1,15 +1,47 @@
-# Debian 11.2 20220418, see https://hub.docker.com/_/debian
-FROM debian:stable-slim@sha256:bd53ab674a48598863d4902d867fab6fa8f1da4f67a2d14b32785398e40c5f18
-COPY Aptfile* /
-RUN apt-get clean && apt-get update -qq && \
-    : install the packages in the lockfile && \
-    apt-get -y install $(cat ./Aptfile.lock | sed 's/#.*//' | grep -v -s -e "^:repo:" | tr '\n' ' ') || true && \
-    : install the packages in the request file, should be a noop && \
-    apt-get -y install $(cat ./Aptfile | sed 's/#.*//' | grep -v -s -e "^:repo:" | tr '\n' ' ') && \
-    : generate an updated lockfile && \
-    dpkg -l | grep ii | awk '{print $2 "=" $3}' > /Aptfile.lock && \
-    : cleanup && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# Requires https://salsa.debian.org/apt-team/apt/-/merge_requests/291
+FROM debian:trixie-slim
+ENV DEBIAN_FRONTEND=noninteractive
+# from https://github.com/reproducible-containers
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  : "${SOURCE_DATE_EPOCH:=$(stat --format=%Y /etc/apt/sources.list.d/debian.sources)}" && \
+  snapshot="$(/bin/bash -euc "printf \"%(%Y%m%dT%H%M%SZ)T\n\" \"${SOURCE_DATE_EPOCH}\"")" && \
+  : "Enabling snapshot" && \
+  sed -i -e '/URIs: http:\/\/deb.debian.org\/debian/ a\Snapshot: true' /etc/apt/sources.list.d/debian.sources && \
+  : "Enabling cache" && \
+  rm -f /etc/apt/apt.conf.d/docker-clean && \
+  echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/keep-cache && \
+  : "Fetching the snapshot and installing ca-certificates in one command" && \
+  apt-get install --update --snapshot "${snapshot}" -o Acquire::Check-Valid-Until=false -o Acquire::https::Verify-Peer=false -y ca-certificates && \
+  : "Installing sorted packages" && \
+  apt-get install --snapshot "${snapshot}" -y \
+    build-essential \
+    curl \
+    dnsutils \
+    git \
+    htop \
+    iptables \
+    iputils-ping \
+    jq \
+    lsb-release \
+    lsof \
+    make \
+    netcat-openbsd \
+    nmap \
+    ntpdate \
+    openssh-client \
+    postgresql-client \
+    procps \
+    rsync \
+    strace \
+    sudo \
+    tcpdump \
+    telnet \
+    util-linux \
+    vim-nox \
+    wget \
+    ;
 
 RUN useradd --create-home app && \
     adduser app sudo && \

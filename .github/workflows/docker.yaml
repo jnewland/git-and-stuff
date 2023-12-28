@@ -6,90 +6,72 @@ on:
       - opened
       - labeled
       - synchronize
+
+run-name: ${{ github.workflow }} ${{ github.event_name }} ${{ github.head_ref || github.ref_name }} ${{ github.sha }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: docker/setup-qemu-action@8b122486cedac8393e77aa9734c3528886e4a1a8 # tag=v2
-      - uses: docker/setup-buildx-action@dc7b9719a96d48369863986a06765841d7ea23f6 # tag=v2.0.0
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
       - id: docker_meta
-        uses: docker/metadata-action@69f6fc9d46f2f8bf0d5491e4aabe0bb8c6a4678a # tag=v4.0.1
+        uses: docker/metadata-action@v5
         with:
-          github-token: ${{ github.token }}
           tags: |
             type=ref,event=tag
             type=raw,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }},value=${{ github.event.repository.default_branch }}
             type=raw,enable=${{ contains(github.event.pull_request.labels.*.name, 'docker:pr-image') }},value=pr-${{ github.event.pull_request.number }}
           images: |
-            ${{ github.repository }}
             ghcr.io/${{ github.repository }}
+      - name: Cache var-cache-apt
+        uses: actions/cache@v3
+        with:
+          path: var-cache-apt
+          key: var-cache-apt-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            var-cache-apt-
+      - name: Cache var-lib-apt
+        uses: actions/cache@v3
+        with:
+          path: var-lib-apt
+          key: var-lib-apt-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            var-lib-apt-
+      - name: inject var-cache-apt into docker
+        uses: reproducible-containers/buildkit-cache-dance@v2.1.3
+        with:
+          cache-source: var-cache-apt
+          cache-target: /var/cache/apt
+      - name: inject var-lib-apt into docker
+        uses: reproducible-containers/buildkit-cache-dance@v2.1.3
+        with:
+          cache-source: var-lib-apt
+          cache-target: /var/lib/apt
 
-      - uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # tag=v2
+      - uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       
-      - uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # tag=v2 
-        if: startsWith(github.ref, 'refs/tags/') || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+      - uses: docker/build-push-action@v5
         with:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # tag=v3
-        with:
+          context: .
           pull: true
           push: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == format('refs/heads/{0}', github.event.repository.default_branch) || contains(github.event.pull_request.labels.*.name, 'docker:pr-image') }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-          cache-from: |
-            type=gha
-          cache-to: |
-            mode=max,type=local,dest=/tmp/.buildx-cache
-
-      - name: load local image
-        uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # tag=v3
-        with:
-          pull: false
-          push: false
-          load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          tags: ${{ github.event.repository.name }}
+          cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - run: make check
-      - name: sync Aptfile.lock
-        if: failure()
-        env:
-          BOT_TOKEN: ${{ secrets.CR_PAT }}
-          PUSHER_NAME: ${{ github.event.pusher.name }}
-          PUSHER_EMAIL: ${{ github.event.pusher.email }}
-        run: |
-          git config --local user.email "$PUSHER_EMAIL"
-          git config --local user.name "$PUSHER_NAME"
-          git add .
-          git commit -am "sync Aptfile.lock"
 
-          echo "::error ::Aptfile.lock outdated"
 
-          GITHUB_USER=$(echo ${GITHUB_REPOSITORY} | cut -f 1 -d /)
-          cat > ~/.netrc <<EOF
-          machine github.com
-            login $GITHUB_USER
-            password $BOT_TOKEN
-          EOF
-          git remote add github "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
-
-          # Push & rebase 5 times
-          rebases=0
-          until [ $rebases -ge 5 ]; do
-            if git push github HEAD:${GITHUB_REF}; then
-              echo "::error ::Aptfile.lock update pushed. Please push another commit to the branch."
-              exit 1
-            else
-              git pull --rebase github ${GITHUB_REF}
-            fi
-            rebases=$[$rebases+1]
-          done
-          exit 1
