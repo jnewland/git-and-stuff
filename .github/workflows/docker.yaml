@@ -74,6 +74,11 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64,linux/arm/v7
 
+      - uses: actions/setup-go@v5
+        if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'docker:pr-image')
+        with:
+          go-version: 1.21.x
+
       - name: diffoci
         if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'docker:pr-image')
         run: |
