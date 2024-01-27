@@ -25,7 +25,7 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: urcomputeringpal/.github/.github/workflows/renovate.yaml@main
     with:
-      renovate_app_slug: your-app-name
+      renovate_app_slug: jnewland-renovate
       dry_run_branch: ${{ github.event.pull_request.head.ref }}
     secrets:
       RENOVATE_APP_ID: ${{ secrets.RENOVATE_APP_ID }}
