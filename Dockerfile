@@ -1,5 +1,5 @@
 # Requires https://salsa.debian.org/apt-team/apt/-/merge_requests/291
-FROM debian:trixie-slim@sha256:5bbdd760fb1bb58a1b0f93a9f26d3f02d9a9dc323c5ca6283ef45fd35845161d
+FROM debian:trixie-slim@sha256:a048b41bd514460841cf11612df034687260b6b76461945ef9c7971c27f68d3b
 ENV DEBIAN_FRONTEND=noninteractive
 # from https://github.com/reproducible-containers
 RUN \
