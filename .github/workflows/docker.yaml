@@ -49,14 +49,14 @@ jobs:
           restore-keys: |
             var-lib-apt-
       - name: inject var-cache-apt into docker
-        uses: reproducible-containers/buildkit-cache-dance@4b2444fec0c0fb9dbf175a96c094720a692ef810 # v2.1.4
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
         with:
           cache-source: var-cache-apt
           cache-target: /var/cache/apt
           skip-extraction: ${{ steps.cache-var-cache-apt.outputs.cache-hit }}
 
       - name: inject var-lib-apt into docker
-        uses: reproducible-containers/buildkit-cache-dance@4b2444fec0c0fb9dbf175a96c094720a692ef810 # v2.1.4
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
         with:
           cache-source: var-lib-apt
           cache-target: /var/lib/apt
